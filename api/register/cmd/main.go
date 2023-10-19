@@ -5,7 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"goproject/register/client"
+	"goproject/api/register/client"
 	"io"
 	"log"
 	"net/http"
