@@ -1,0 +1,318 @@
+
+{ 
+    "user1" : 
+         {
+            "cpf" : "622.379.353.78",
+            "name" : "Luiz Henrique",
+            "email" : "luiz.cavalcante@ifood.com.br",
+            "adress": {
+                "street": "dos bobos",
+                "number": "010"
+            }
+        },
+
+    "user1_response" :{
+            "id": 1,
+            "cpf": "622.379.353.78",
+            "name": "Luiz Henrique",
+            "email": "luiz.cavalcante@ifood.com.br",
+            "adress": {
+                "street": "dos bobos",
+                "number": "010"
+            },
+            "status": "Created",
+            "message": "Created with successful."
+        },
+
+       "user2" : {
+            
+            "cpf" : "622.379.353.79",
+            "name" : "Paulo Eduardo",
+            "email" : "paulo.cavalcante@ifood.com.br",
+            "adress": {
+                "street": "dos bobos",
+                "number": "020"
+            }
+        },
+    
+       "user2_response" : {
+            "id": 2,
+            "cpf": "622.379.353.79",
+            "name": "Paulo Eduardo",
+            "email": "paulo.cavalcante@ifood.com.br",
+            "adress": {
+                "street": "dos bobos",
+                "number": "020"
+            },
+            "status": "Created",
+            "message": "Created with successful."
+        },
+        
+        "error":[ { 
+            "errorCode": "INVALID_ACCOUNT",
+            "errorMessage": "O usuário já possui conta"
+        },
+        { 
+            "errorCode": "INVALID_CPF",
+            "errorMessage": "O CPF informado é inválido"
+        },
+        {
+            "errorCode": "SYSTEM_ERROR",
+            "errorMessage": "Um erro inesperado aconteceu. Por favor, tente novamente depois."
+        }
+    ],
+
+   
+
+    "deposito" : 
+        {
+            "account_id" : 1,
+            "transactionType": "deposit",
+            "value" : 100,
+            "currency" : "BRL",
+            "transactionDate": "2023-10-16T18:06:00Z",
+            "description": "Depósito bancário"
+
+        },
+
+
+    "deposito_response" : 
+        {
+            "account_id" : 1,
+            "transactionType": "deposit",
+            "value" : 100,
+            "currency" : "BRL",
+            "transactionDate": "2023-10-16T18:06:00Z",
+            "description": "Depósito bancário",
+            "saldo": "100",
+            "status": "Success",
+            "message": "The transaction was successful."
+        },
+
+
+       "errord" : [{ 
+            "errorCode": "INVALID_ACCOUNT",
+            "errorMessage": "O account_id inserido não existe"
+        },
+
+        { 
+            "errorCode": "INSUFFICIENT_FUNDS",
+            "errorMessage": "A conta de origem não possui fundos suficientes para o depósito."
+        },
+        {
+            "errorCode": "INVALID_AMOUNT",
+            "errorMessage": "O valor do depósito deve ser maior do que zero"
+        },
+        {
+            "errorCode": "INVALID_CURRENCY",
+            "errorMessage": "A moeda selecionada não é suportada."
+        },
+        {
+            "errorCode": "SYSTEM_ERROR",
+            "errorMessage": "Um erro inesperado aconteceu. Por favor, tente novamente depois."
+        }
+    ],
+
+
+    "saque" : 
+        {
+            "account_id" : 1,
+            "transactionType": "withdraw",
+            "saldo": "100",
+            "value" : 10,
+            "currency" : "BRL",
+            "transactionDate": "2023-10-16T18:06:00Z",
+            "description": "Saque bancário"
+
+        },
+
+    "saque_response" : 
+    {
+            "account_id" : 1,
+            "transactionType": "withdraw",
+            "saldo": "90",
+            "value" : 10,
+            "currency" : "BRL",
+            "transactionDate": "2023-10-16T18:06:00Z",
+            "description": "Saque bancário",
+            "status": "Success",
+            "message": "The transaction was successful."
+
+        },
+
+
+       "errors" :[ { 
+            "errorCode": "INVALID_ACCOUNT",
+            "errorMessage": "O account_id inserido não existe"
+        },
+
+        { 
+            "errorCode": "INSUFFICIENT_FUNDS",
+            "errorMessage": "A conta de origem não possui fundos suficientes para o saque."
+        },
+        {
+            "errorCode": "INVALID_AMOUNT",
+            "errorMessage": "O valor do saque deve ser maior do que zero"
+        },
+        {
+            "errorCode": "INVALID_CURRENCY",
+            "errorMessage": "A moeda selecionada não é suportada."
+        },
+        {
+            "errorCode": "SYSTEM_ERROR",
+            "errorMessage": "Um erro inesperado aconteceu. Por favor, tente novamente depois."
+        }
+       ],
+
+    "transferencia" : 
+
+        {
+            "account_id" : 1,
+            "account_id_destino" : 2,
+            "name_account_id_destino" : "Paulo Eduardo",
+            "email_account_id_destino" : "paulo.cavalcante@ifood.com.br",
+            "transactionType": "Bank Transfer",
+            "saldo": "90",
+            "value" : 20,
+            "currency" : "BRL",
+            "transactionDate": "2023-10-16T18:06:00Z",
+            "description": "Transferência bancário"
+        },
+
+        "transferencia_response":
+        {
+            "account_id" : 1,
+            "account_id_destino" : 2,
+            "name_account_id_destino" : "Paulo Eduardo",
+            "email_account_id_destino" : "paulo.cavalcante@ifood.com.br",
+            "transactionType": "Bank Transfer",
+            "saldo": "70",
+            "value" : 20,
+            "currency" : "BRL",
+            "transactionDate": "2023-10-16T18:06:00Z",
+            "description": "Transferência bancário",
+            "status": "Success",
+            "message": "The transaction was successful."
+        },
+
+        "errort" :[ { 
+            "errorCode": "INVALID_ACCOUNT",
+            "errorMessage": "O account_id inserido não existe"
+        },
+
+        { 
+            "errorCode": "INSUFFICIENT_FUNDS",
+            "errorMessage": "A conta de origem não possui fundos suficientes para o saque."
+        },
+        {
+            "errorCode": "INVALID_AMOUNT",
+            "errorMessage": "O valor do saque deve ser maior do que zero"
+        },
+        {
+            "errorCode": "INVALID_CURRENCY",
+            "errorMessage": "A moeda selecionada não é suportada."
+        },
+        {
+            "errorCode": "SYSTEM_ERROR",
+            "errorMessage": "Um erro inesperado aconteceu. Por favor, tente novamente depois."
+        }
+       ],
+
+    "saldo" : 
+        {
+            "account_id" : 1, 
+            "name" : "Luiz Henrique",
+            "email" : "luiz.cavalcante@ifood.com.br"
+
+        },
+    
+    "saldo_response" :
+
+        {
+            "account_id" : 1, 
+            "name" : "Luiz Henrique",
+            "email" : "luiz.cavalcante@ifood.com.br",
+            "saldo" : 70
+
+        },
+        
+    "errorss" : [
+        { 
+            "errorCode": "INVALID_ACCOUNT",
+            "errorMessage": "O account_id inserido não existe"
+        },
+        {
+            "errorCode": "SYSTEM_ERROR",
+            "errorMessage": "Um erro inesperado aconteceu. Por favor, tente novamente depois."
+        }
+    ],
+
+    "extrato" : [
+
+        {
+            "account_id" : 1, 
+            "name" : "Luiz Henrique",
+            "email" : "luiz.cavalcante@ifood.com.br",
+        
+
+            "transferencias" :  
+            [
+                {
+                    "account_id" : 1,
+                    "account_id_destino" : 2,
+                    "name_account_id_destino" : "Paulo Eduardo",
+                    "email_account_id_destino" : "paulo.cavalcante@ifood.com.br",
+                    "transactionType": "Bank Transfer",
+                    "saldo": "90",
+                    "value" : 20,
+                    "currency" : "BRL",
+                    "transactionDate": "2023-10-16T18:06:00Z",
+                    "description": "Transferência bancário"
+                }
+            ],
+
+            "depositos" : [
+                {
+                    "account_id" : 1,
+                    "transactionType": "deposit",
+                    "value" : 100,
+                    "currency" : "BRL",
+                    "transactionDate": "2023-10-16T18:06:00Z",
+                    "description": "Depósito bancário"
+        
+                }
+            ],
+
+            "saques" : [
+                {
+                    "account_id" : 1,
+                    "transactionType": "withdraw",
+                    "saldo": "100",
+                    "value" : 10,
+                    "currency" : "BRL",
+                    "transactionDate": "2023-10-16T18:06:00Z",
+                    "description": "Saque bancário"
+        
+                }
+            ]
+
+        }
+    ],
+        
+    "errore" : [
+        { 
+            "errorCode": "INVALID_ACCOUNT",
+            "errorMessage": "O account_id inserido não existe"
+        },
+        {
+            "errorCode": "SYSTEM_ERROR",
+            "errorMessage": "Um erro inesperado aconteceu. Por favor, tente novamente depois."
+        }
+    ]
+    
+
+}
+
+
+
+
