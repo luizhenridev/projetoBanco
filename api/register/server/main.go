@@ -38,16 +38,52 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if request.CPF == "" && request.Name == "" && request.Email == "" {
-		http.Error(w, "Parâmetros obrigatórios ausentes", http.StatusBadRequest)
+		w.WriteHeader(http.StatusBadRequest)
+		response := models.Erros{
+			ErrorCode:    "INVALID_PARAMETERS",
+			ErrorMessage: "Parâmetro parâmetros ausentes",
+		}
+		w.Header().Set("Content-Type", "application/json")
+		err = json.NewEncoder(w).Encode(response) // Defina o código de status antes de escrever o corpo
+		if err != nil {
+			log.Println(err)
+		}
 		return
 	} else if request.CPF == "" {
-		http.Error(w, "Parâmetro CPF ausente", http.StatusBadRequest)
+		w.WriteHeader(http.StatusBadRequest)
+		response := models.Erros{
+			ErrorCode:    "INVALID_CPF",
+			ErrorMessage: "Parâmetro CPF ausente",
+		}
+		w.Header().Set("Content-Type", "application/json")
+		err = json.NewEncoder(w).Encode(response) // Defina o código de status antes de escrever o corpo
+		if err != nil {
+			log.Println(err)
+		}
 		return
 	} else if request.Name == "" {
-		http.Error(w, "Parâmetro Name ausente", http.StatusBadRequest)
+		w.WriteHeader(http.StatusBadRequest)
+		response := models.Erros{
+			ErrorCode:    "INVALID_NAME",
+			ErrorMessage: "Parâmetro NAME ausente",
+		}
+		w.Header().Set("Content-Type", "application/json")
+		err = json.NewEncoder(w).Encode(response) // Defina o código de status antes de escrever o corpo
+		if err != nil {
+			log.Println(err)
+		}
 		return
 	} else if request.Email == "" {
-		http.Error(w, "Parâmetro Email ausente", http.StatusBadRequest)
+		w.WriteHeader(http.StatusBadRequest)
+		response := models.Erros{
+			ErrorCode:    "INVALID_EMAIL",
+			ErrorMessage: "Parâmetro EMAIL ausente",
+		}
+		w.Header().Set("Content-Type", "application/json")
+		err = json.NewEncoder(w).Encode(response) // Defina o código de status antes de escrever o corpo
+		if err != nil {
+			log.Println(err)
+		}
 		return
 	}
 
@@ -59,7 +95,10 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		Address:    models.Address{Street: request.Address.Street, Number: request.Address.Number}}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(response)
+	err = json.NewEncoder(w).Encode(response) // Defina o código de status antes de escrever o corpo
+	if err != nil {
+		log.Println(err)
+	}
 
 	select {
 	case <-time.After(5 * time.Second):
@@ -109,7 +148,10 @@ func GetHandler(w http.ResponseWriter, r *http.Request) {
 	//}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(response) // Defina o código de status antes de escrever o corpo
+	err = json.NewEncoder(w).Encode(response) // Defina o código de status antes de escrever o corpo
+	if err != nil {
+		log.Println(err)
+	}
 
 	select {
 	case <-time.After(5 * time.Second):
