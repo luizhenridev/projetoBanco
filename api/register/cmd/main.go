@@ -1,47 +1,19 @@
 package main
 
 import (
-	"bytes"
-	"context"
-	"fmt"
-	"goproject/api/register/models"
-
-	"io"
-	"log"
+	"goproject/handlers"
 	"net/http"
-	"time"
+
+	"github.com/gorilla/mux"
 )
 
 func main() {
+	// SERVER
+	r := mux.NewRouter()
 
-	//CLIENT
-	ac := models.Client{
-		CPF:     "00000000",
-		Name:    "Luiz",
-		Email:   "luiz.henri882@gmail.com",
-		Address: models.Address{Street: "Rua Joaquim Jerônimo", Number: 386}}
-	reader := models.NewClientJson(ac)
-	ctxClient, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
+	r.HandleFunc("/register", handlers.Handler).Methods("POST")
+	r.HandleFunc("/register", handlers.GetHandler).Methods("GET")
 
-	fmt.Println("Reader", reader)
-
-	req, err := http.NewRequestWithContext(ctxClient, "POST", "http://localhost:8080", bytes.NewBuffer(reader))
-	if err != nil {
-		log.Println(err)
-	}
-
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-		log.Println(err)
-	}
-
-	defer res.Body.Close()
-
-	body, err := io.ReadAll(res.Body)
-	if err != nil {
-		log.Println(err)
-	}
-	println("Resposta", string(body))
+	http.ListenAndServe(":8080", r)
 
 }
