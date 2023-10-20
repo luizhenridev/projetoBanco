@@ -26,7 +26,7 @@ func main() {
 
 	fmt.Println("Reader", reader)
 
-	req, err := http.NewRequestWithContext(ctxClient, "POST", "http://localhost:8080/register", bytes.NewBuffer(reader))
+	req, err := http.NewRequestWithContext(ctxClient, "POST", "http://localhost:8080", bytes.NewBuffer(reader))
 	if err != nil {
 		log.Println(err)
 	}

@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"goproject/api/register/client"
-	"io"
 	"log"
 	"net/http"
 	"time"
@@ -16,7 +15,9 @@ func main() {
 	// SERVER
 
 	mux := http.NewServeMux()
+	mux.HandleFunc("/", Handler)
 	mux.HandleFunc("/register", Handler)
+
 	http.ListenAndServe(":8080", mux)
 }
 
@@ -33,16 +34,12 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 	var request client.Client
 
-	bodyRes, err := io.ReadAll(r.Body)
+	err := json.NewDecoder(r.Body).Decode(&request)
 	if err != nil {
 		log.Println(err)
 	}
-	fmt.Println("valor de r.Body", bodyRes)
-	decoder, err := json.Marshal(bodyRes)
-	if err != nil {
-		log.Println(err)
-	}
-	fmt.Println("vaalor de decoder", decoder)
+
+	fmt.Println("valor de r.Body decode", request)
 
 	response := client.ClientResponse{
 		Account_id: uuid.New().String(),
@@ -51,14 +48,8 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		Email:      request.Email,
 		Address:    client.Address{Street: "Rua Joaquim Jerônimo", Number: 386}}
 
-	jsonResponse, err := json.Marshal(response)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK) // Defina o código de status antes de escrever o corpo
+	json.NewEncoder(w).Encode(response) // Defina o código de status antes de escrever o corpo
 
 	select {
 	case <-time.After(5 * time.Second):
@@ -66,7 +57,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		log.Println("Request Processada com sucesso")
 		//Imprime no browser
 		//w.Write([]byte("Request Processada com sucesso"))
-		w.Write([]byte(jsonResponse))
+		w.Write([]byte(response))
 	case <-ctx.Done():
 		//imprime no comand line stdout
 		log.Println("Request cancelada pelo client")
