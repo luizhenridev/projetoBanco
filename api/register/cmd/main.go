@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"goproject/api/register/client"
+	"goproject/api/register/models"
 
 	"io"
 	"log"
@@ -15,12 +15,12 @@ import (
 func main() {
 
 	//CLIENT
-	ac := client.Client{
+	ac := models.Client{
 		CPF:     "00000000",
 		Name:    "Luiz",
 		Email:   "luiz.henri882@gmail.com",
-		Address: client.Address{Street: "Rua Joaquim Jerônimo", Number: 386}}
-	reader := client.NewClientJson(ac)
+		Address: models.Address{Street: "Rua Joaquim Jerônimo", Number: 386}}
+	reader := models.NewClientJson(ac)
 	ctxClient, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
