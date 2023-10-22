@@ -13,6 +13,9 @@ func main() {
 
 	r.HandleFunc("/register", handlers.Handler).Methods("POST")
 	r.HandleFunc("/register", handlers.GetHandler).Methods("GET")
+	r.HandleFunc("/register/{id}", handlers.GetHandlerID).Methods("GET")
+	r.HandleFunc("/register/{id}", handlers.UpdateHandler).Methods("PUT")
+	r.HandleFunc("/register/{id}", handlers.DeleteHandler).Methods("DELETE")
 
 	http.ListenAndServe(":8080", r)
 
