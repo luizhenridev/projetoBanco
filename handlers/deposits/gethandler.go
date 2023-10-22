@@ -1,4 +1,4 @@
-package handlers
+package deposits
 
 import (
 	"encoding/json"
@@ -6,27 +6,23 @@ import (
 	"log"
 	"net/http"
 	"time"
-
-	"github.com/gorilla/mux"
 )
 
-func UpdateHandler(w http.ResponseWriter, r *http.Request) {
+func GetHandler(w http.ResponseWriter, r *http.Request) {
 
 	//v := reflect.ValueOf(&userPosts)
 	ctx := r.Context()
 	log.Println("Request Iniciada")
 	defer log.Println("Request Finalizada")
 
-	if r.Method != http.MethodPut {
+	if r.Method != http.MethodGet {
 		http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
 	}
 
-	params := mux.Vars(r)
-
-	userPost := db.Update(params, r)
+	userPosts := db.GetInsert()
 
 	w.Header().Set("Content-Type", "application/json")
-	err := json.NewEncoder(w).Encode(&userPost) // Defina o código de status antes de escrever o corpo
+	err := json.NewEncoder(w).Encode(&userPosts) // Defina o código de status antes de escrever o corpo
 	if err != nil {
 		log.Println(err)
 	}

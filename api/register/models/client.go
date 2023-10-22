@@ -14,7 +14,7 @@ type Client struct {
 	CPF     string  `json:"cpf"`
 	Name    string  `json:"name"`
 	Email   string  `json:"email"`
-	Address Address `json:"addres"`
+	Address Address `json:"address"`
 }
 
 type ClientResponse struct {
@@ -22,7 +22,7 @@ type ClientResponse struct {
 	CPF        string  `json:"cpf"`
 	Name       string  `json:"name"`
 	Email      string  `json:"email"`
-	Address    Address `json:"addres"`
+	Address    Address `json:"address"`
 }
 
 func NewClientJson(c Client) []byte {

@@ -1,4 +1,4 @@
-package handlers
+package registers
 
 import (
 	"encoding/json"
@@ -6,9 +6,11 @@ import (
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/gorilla/mux"
 )
 
-func GetHandler(w http.ResponseWriter, r *http.Request) {
+func GetHandlerID(w http.ResponseWriter, r *http.Request) {
 
 	//v := reflect.ValueOf(&userPosts)
 	ctx := r.Context()
@@ -19,7 +21,9 @@ func GetHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
 	}
 
-	userPosts := db.GetInsert()
+	params := mux.Vars(r)
+
+	userPosts := db.GetInsertID(params)
 
 	w.Header().Set("Content-Type", "application/json")
 	err := json.NewEncoder(w).Encode(&userPosts) // Defina o código de status antes de escrever o corpo
