@@ -1,6 +1,7 @@
 package main
 
 import (
+	"goproject/handlers/deposits"
 	"goproject/handlers/registers"
 	"net/http"
 
@@ -16,6 +17,12 @@ func main() {
 	r.HandleFunc("/register/{id}", registers.GetHandlerID).Methods("GET")
 	r.HandleFunc("/register/{id}", registers.UpdateHandler).Methods("PUT")
 	r.HandleFunc("/register/{id}", registers.DeleteHandler).Methods("DELETE")
+	//DEPOSIT
+	r.HandleFunc("/deposit", deposits.Handler).Methods("POST")
+	r.HandleFunc("/deposit", deposits.GetHandler).Methods("GET")
+	r.HandleFunc("/deposit/{id}", deposits.GetHandlerID).Methods("GET")
+	r.HandleFunc("/deposit/{id}", deposits.UpdateHandler).Methods("PUT")
+	r.HandleFunc("/deposit/{id}", deposits.DeleteHandler).Methods("DELETE")
 
 	http.ListenAndServe(":8080", r)
 

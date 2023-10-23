@@ -27,48 +27,48 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if request.CPF == "" && request.Name == "" && request.Email == "" {
+		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusBadRequest)
 		response := models.Erros{
 			ErrorCode:    "INVALID_PARAMETERS",
 			ErrorMessage: "Parâmetro parâmetros ausentes",
 		}
-		w.Header().Set("Content-Type", "application/json")
-		err = json.NewEncoder(w).Encode(response) // Defina o código de status antes de escrever o corpo
+		err = json.NewEncoder(w).Encode(&response) // Defina o código de status antes de escrever o corpo
 		if err != nil {
 			log.Println(err)
 		}
 		return
 	} else if request.CPF == "" {
+		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusBadRequest)
 		response := models.Erros{
 			ErrorCode:    "INVALID_CPF",
 			ErrorMessage: "Parâmetro CPF ausente",
 		}
-		w.Header().Set("Content-Type", "application/json")
-		err = json.NewEncoder(w).Encode(response) // Defina o código de status antes de escrever o corpo
+		err = json.NewEncoder(w).Encode(&response) // Defina o código de status antes de escrever o corpo
 		if err != nil {
-			log.Println(err)
+			return
 		}
 		return
 	} else if request.Name == "" {
+		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusBadRequest)
 		response := models.Erros{
 			ErrorCode:    "INVALID_NAME",
 			ErrorMessage: "Parâmetro NAME ausente",
 		}
-		w.Header().Set("Content-Type", "application/json")
 		err = json.NewEncoder(w).Encode(response) // Defina o código de status antes de escrever o corpo
 		if err != nil {
 			log.Println(err)
 		}
 		return
 	} else if request.Email == "" {
+		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusBadRequest)
 		response := models.Erros{
 			ErrorCode:    "INVALID_EMAIL",
 			ErrorMessage: "Parâmetro EMAIL ausente",
 		}
-		w.Header().Set("Content-Type", "application/json")
 		err = json.NewEncoder(w).Encode(response) // Defina o código de status antes de escrever o corpo
 		if err != nil {
 			log.Println(err)
@@ -96,7 +96,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		//imprime no comand line stdout
 		log.Println("Request Processada com sucesso")
 		//Imprime no browser
-		w.Write([]byte("Request Processada com sucesso"))
+		//w.Write([]byte("Request Processada com sucesso"))
 		//w.Write([]byte(response))
 	case <-ctx.Done():
 		//imprime no comand line stdout

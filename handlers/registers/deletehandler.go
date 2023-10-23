@@ -36,7 +36,7 @@ func DeleteHandler(w http.ResponseWriter, r *http.Request) {
 		//imprime no comand line stdout
 		log.Println("Request Processada com sucesso")
 		//Imprime no browser
-		w.Write([]byte("Request Processada com sucesso"))
+		//w.Write([]byte("Request Processada com sucesso"))
 		//w.Write([]byte(response))
 	case <-ctx.Done():
 		//imprime no comand line stdout

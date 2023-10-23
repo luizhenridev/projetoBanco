@@ -23,7 +23,7 @@ func DeleteHandler(w http.ResponseWriter, r *http.Request) {
 
 	params := mux.Vars(r)
 
-	userPosts := db.Update(params, r)
+	userPosts := db.DeleteDeposit(params, r)
 
 	w.Header().Set("Content-Type", "application/json")
 	err := json.NewEncoder(w).Encode(&userPosts) // Defina o código de status antes de escrever o corpo
@@ -36,7 +36,7 @@ func DeleteHandler(w http.ResponseWriter, r *http.Request) {
 		//imprime no comand line stdout
 		log.Println("Request Processada com sucesso")
 		//Imprime no browser
-		w.Write([]byte("Request Processada com sucesso"))
+		//w.Write([]byte("Request Processada com sucesso"))
 		//w.Write([]byte(response))
 	case <-ctx.Done():
 		//imprime no comand line stdout
