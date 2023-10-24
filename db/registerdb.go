@@ -9,7 +9,7 @@ import (
 
 var userPosts []models.ClientResponse
 
-func ValidateCPF(c models.ClientResponse) any {
+func ValidateCPF(c models.ClientResponse) bool {
 	for index, item := range userPosts {
 		if item.CPF == c.CPF {
 			fmt.Println("index", index)
