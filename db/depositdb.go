@@ -8,6 +8,17 @@ import (
 
 var userDeposits []models.DepositResponse
 
+func SumBalance(d *models.DepositResponse) models.DepositResponse {
+	for _, deposit := range userDeposits {
+		if deposit.Account_id == d.Account_id {
+			d.Balance = deposit.Balance + d.Value
+			return *d
+		}
+	}
+	return *d
+
+}
+
 func InsertDeposit(d models.DepositResponse) *[]models.DepositResponse {
 	userDeposits = append(userDeposits, d)
 	return &userDeposits

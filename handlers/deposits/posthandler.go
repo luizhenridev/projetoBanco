@@ -63,6 +63,8 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		Message:         "The transaction was successful.",
 	}
 
+	response = db.SumBalance(&response)
+
 	w.Header().Set("Content-Type", "application/json")
 	err = json.NewEncoder(w).Encode(&response) // Defina o código de status antes de escrever o corpo
 	if err != nil {

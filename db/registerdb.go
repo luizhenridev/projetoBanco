@@ -2,7 +2,6 @@ package db
 
 import (
 	"encoding/json"
-	"fmt"
 	"goproject/api/register/models"
 	"net/http"
 )
@@ -10,9 +9,9 @@ import (
 var userPosts []models.ClientResponse
 
 func ValidateCPF(c models.ClientResponse) bool {
-	for index, item := range userPosts {
+	for _, item := range userPosts {
 		if item.CPF == c.CPF {
-			fmt.Println("index", index)
+
 			return false
 		}
 	}

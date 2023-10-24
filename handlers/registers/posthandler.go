@@ -2,7 +2,6 @@ package registers
 
 import (
 	"encoding/json"
-	"fmt"
 	"goproject/api/register/models"
 	"goproject/db"
 	"log"
@@ -29,9 +28,6 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	matchCPF, _ := regexp.MatchString(`^([\d]{3})([.]?)([\d]{3})([.]?)([\d]{3})([.|-]?)([\d]{2})$`, request.CPF)
-	if !matchCPF {
-		fmt.Println("O cpf ÉSTÁ errado", matchCPF)
-	}
 
 	matchEmail, _ := regexp.MatchString(`(\w{1,}[.]?)\w{1,}[@]\w{1,}[.]\w{3}([.][a-z]+)?`, request.Email)
 
@@ -94,7 +90,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 	validate := db.ValidateCPF(response)
 
-	if validate == true {
+	if validate {
 		w.Header().Set("Content-Type", "application/json")
 		err = json.NewEncoder(w).Encode(&response) // Defina o código de status antes de escrever o corpo
 		if err != nil {
@@ -102,7 +98,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		db.Insert(response)
-	} else if validate == false {
+	} else if !validate {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusBadRequest)
 		response := models.Erros{
