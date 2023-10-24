@@ -2,11 +2,22 @@ package db
 
 import (
 	"encoding/json"
+	"fmt"
 	"goproject/api/register/models"
 	"net/http"
 )
 
 var userPosts []models.ClientResponse
+
+func ValidateCPF(c models.ClientResponse) any {
+	for index, item := range userPosts {
+		if item.CPF == c.CPF {
+			fmt.Println("index", index)
+			return false
+		}
+	}
+	return true
+}
 
 func Insert(c models.ClientResponse) *[]models.ClientResponse {
 	userPosts = append(userPosts, c)

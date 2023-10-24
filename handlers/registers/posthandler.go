@@ -2,10 +2,12 @@ package registers
 
 import (
 	"encoding/json"
+	"fmt"
 	"goproject/api/register/models"
 	"goproject/db"
 	"log"
 	"net/http"
+	"regexp"
 	"time"
 
 	"github.com/google/uuid"
@@ -26,7 +28,14 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 	}
 
-	if request.CPF == "" && request.Name == "" && request.Email == "" {
+	matchCPF, _ := regexp.MatchString(`^([\d]{3})([.]?)([\d]{3})([.]?)([\d]{3})([.|-]?)([\d]{2})$`, request.CPF)
+	if !matchCPF {
+		fmt.Println("O cpf ÉSTÁ errado", matchCPF)
+	}
+
+	matchEmail, _ := regexp.MatchString(`(\w{1,}[.]?)\w{1,}[@]\w{1,}[.]\w{3}([.][a-z]+)?`, request.Email)
+
+	if !matchCPF && request.Name == "" && !matchEmail {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusBadRequest)
 		response := models.Erros{
@@ -38,12 +47,12 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			log.Println(err)
 		}
 		return
-	} else if request.CPF == "" {
+	} else if !matchCPF {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusBadRequest)
 		response := models.Erros{
 			ErrorCode:    "INVALID_CPF",
-			ErrorMessage: "Parâmetro CPF ausente",
+			ErrorMessage: "Parâmetro CPF ausente ou mal formatado",
 		}
 		err = json.NewEncoder(w).Encode(&response) // Defina o código de status antes de escrever o corpo
 		if err != nil {
@@ -62,12 +71,12 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			log.Println(err)
 		}
 		return
-	} else if request.Email == "" {
+	} else if !matchEmail {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusBadRequest)
 		response := models.Erros{
 			ErrorCode:    "INVALID_EMAIL",
-			ErrorMessage: "Parâmetro EMAIL ausente",
+			ErrorMessage: "Parâmetro EMAIL ausente OU mal formatado",
 		}
 		err = json.NewEncoder(w).Encode(response) // Defina o código de status antes de escrever o corpo
 		if err != nil {
@@ -83,13 +92,30 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		Email:      request.Email,
 		Address:    models.Address{Street: request.Address.Street, Number: request.Address.Number}}
 
-	w.Header().Set("Content-Type", "application/json")
-	err = json.NewEncoder(w).Encode(&response) // Defina o código de status antes de escrever o corpo
-	if err != nil {
-		log.Println(err)
-	}
+	validate := db.ValidateCPF(response)
 
-	db.Insert(response)
+	if validate == true {
+		w.Header().Set("Content-Type", "application/json")
+		err = json.NewEncoder(w).Encode(&response) // Defina o código de status antes de escrever o corpo
+		if err != nil {
+			log.Println(err)
+		}
+
+		db.Insert(response)
+	} else if validate == false {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		response := models.Erros{
+			ErrorCode:    "INVALID_CPF",
+			ErrorMessage: "CPF já cadastrado em nossa base de dados",
+		}
+		err = json.NewEncoder(w).Encode(response) // Defina o código de status antes de escrever o corpo
+		if err != nil {
+			log.Println(err)
+		}
+		return
+
+	}
 
 	select {
 	case <-time.After(5 * time.Second):
