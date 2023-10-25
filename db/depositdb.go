@@ -32,13 +32,17 @@ func GetInsertDeposit() *[]models.DepositResponse {
 	return &userDeposits
 }
 
-func GetInsertIDDeposit(params map[string]string) *models.DepositResponse {
+func GetInsertIDDeposit(params map[string]string) *[]models.DepositResponse {
+	var userDepositsID []models.DepositResponse
 	for _, deposit := range userDeposits {
 		if deposit.Account_id == params["id"] {
-			return &deposit
+			userDepositsID = append(userDepositsID, deposit)
+			continue
 		}
+
+		return &userDepositsID
 	}
-	return nil
+	return &userDepositsID
 }
 
 func UpdateDeposit(params map[string]string, r *http.Request) *models.DepositResponse {
