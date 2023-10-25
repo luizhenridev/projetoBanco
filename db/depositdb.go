@@ -9,12 +9,15 @@ import (
 var userDeposits []models.DepositResponse
 
 func SumBalance(d *models.DepositResponse) models.DepositResponse {
-	for _, deposit := range userDeposits {
-		if deposit.Account_id == d.Account_id {
-			d.Balance = deposit.Balance + d.Value
+
+	if userDeposits != nil {
+		lastUserDeposits := userDeposits[len(userDeposits)-1]
+		if lastUserDeposits.Account_id == d.Account_id {
+			d.Balance = lastUserDeposits.Balance + d.Value
 			return *d
 		}
 	}
+
 	return *d
 
 }
@@ -22,6 +25,7 @@ func SumBalance(d *models.DepositResponse) models.DepositResponse {
 func InsertDeposit(d models.DepositResponse) *[]models.DepositResponse {
 	userDeposits = append(userDeposits, d)
 	return &userDeposits
+
 }
 
 func GetInsertDeposit() *[]models.DepositResponse {
