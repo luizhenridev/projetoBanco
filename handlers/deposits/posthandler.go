@@ -1,15 +1,24 @@
 package deposits
 
 import (
+	"database/sql"
 	"encoding/json"
 	"goproject/api/register/models"
 	"goproject/db"
 	"log"
 	"net/http"
 	"time"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
+	dbd, err := sql.Open("mysql", "root:root@tcp(localhost:3306)/goexpert")
+	if err != nil {
+		panic(err)
+	}
+	defer dbd.Close()
+
 	ctx := r.Context()
 	log.Println("Request Iniciada")
 
@@ -19,7 +28,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 	var request models.Deposit
 
-	err := json.NewDecoder(r.Body).Decode(&request)
+	err = json.NewDecoder(r.Body).Decode(&request)
 	if err != nil {
 		log.Println(err)
 	}

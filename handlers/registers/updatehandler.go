@@ -23,10 +23,13 @@ func UpdateHandler(w http.ResponseWriter, r *http.Request) {
 
 	params := mux.Vars(r)
 
-	userPost := db.Update(params, r)
+	userPost, err := db.Update(params, r)
+	if err != nil {
+		log.Println(err)
+	}
 
 	w.Header().Set("Content-Type", "application/json")
-	err := json.NewEncoder(w).Encode(&userPost) // Defina o código de status antes de escrever o corpo
+	err = json.NewEncoder(w).Encode(&userPost) // Defina o código de status antes de escrever o corpo
 	if err != nil {
 		log.Println(err)
 	}

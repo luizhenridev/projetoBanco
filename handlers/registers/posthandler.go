@@ -9,10 +9,13 @@ import (
 	"regexp"
 	"time"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/google/uuid"
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
+
+	//Context
 	ctx := r.Context()
 	log.Println("Request Iniciada")
 

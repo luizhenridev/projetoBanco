@@ -19,10 +19,13 @@ func GetHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
 	}
 
-	userPosts := db.GetInsert()
+	userPosts, err := db.GetInsert()
+	if err != nil {
+		log.Println(err)
+	}
 
 	w.Header().Set("Content-Type", "application/json")
-	err := json.NewEncoder(w).Encode(&userPosts) // Defina o código de status antes de escrever o corpo
+	err = json.NewEncoder(w).Encode(&userPosts) // Defina o código de status antes de escrever o corpo
 	if err != nil {
 		log.Println(err)
 	}

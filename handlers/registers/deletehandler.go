@@ -23,10 +23,13 @@ func DeleteHandler(w http.ResponseWriter, r *http.Request) {
 
 	params := mux.Vars(r)
 
-	userPosts := db.Update(params, r)
+	err := db.Delete(params)
+	if err != nil {
+		log.Println(err)
+	}
 
 	w.Header().Set("Content-Type", "application/json")
-	err := json.NewEncoder(w).Encode(&userPosts) // Defina o código de status antes de escrever o corpo
+	err = json.NewEncoder(w).Encode(&err) // Defina o código de status antes de escrever o corpo
 	if err != nil {
 		log.Println(err)
 	}

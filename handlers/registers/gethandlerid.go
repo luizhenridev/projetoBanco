@@ -23,7 +23,7 @@ func GetHandlerID(w http.ResponseWriter, r *http.Request) {
 
 	params := mux.Vars(r)
 
-	userPosts := db.GetInsertID(params)
+	userPosts, _ := db.GetInsertID(params)
 
 	w.Header().Set("Content-Type", "application/json")
 	err := json.NewEncoder(w).Encode(&userPosts) // Defina o código de status antes de escrever o corpo
