@@ -23,7 +23,7 @@ func UpdateHandler(w http.ResponseWriter, r *http.Request) {
 
 	params := mux.Vars(r)
 
-	userPost, err := db.Update(params, r)
+	userPost, err := db.Update(params, w, r)
 	if err != nil {
 		log.Println(err)
 	}
