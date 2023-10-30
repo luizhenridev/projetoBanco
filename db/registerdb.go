@@ -6,6 +6,7 @@ import (
 	"goproject/api/register/models"
 	"log"
 	"net/http"
+	"regexp"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -105,12 +106,61 @@ func GetInsertID(params map[string]string) (*models.ClientResponse, error) {
 	return &v, nil
 }
 
-func Update(params map[string]string, r *http.Request) (*models.ClientResponse, error) {
+func Update(params map[string]string, w http.ResponseWriter, r *http.Request) (any, error) {
+	id := params["id"]
 	var request models.ClientResponse
 
 	err := json.NewDecoder(r.Body).Decode(&request)
 	if err != nil {
 		log.Println(err)
+	}
+
+	matchCPF, _ := regexp.MatchString(`^([\d]{3})([.]?)([\d]{3})([.]?)([\d]{3})([.|-]?)([\d]{2})$`, request.CPF)
+
+	matchEmail, _ := regexp.MatchString(`(\w{1,}[.]?)\w{1,}[@]\w{1,}[.]\w{3}([.][a-z]+)?`, request.Email)
+
+	if !matchCPF && request.Name == "" && !matchEmail {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		response := models.Erros{
+			ErrorCode:    "INVALID_PARAMETERS",
+			ErrorMessage: "Parâmetro parâmetros ausentes",
+		}
+
+		return &response, nil
+	} else if !matchCPF {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		response := models.Erros{
+			ErrorCode:    "INVALID_CPF",
+			ErrorMessage: "Parâmetro CPF ausente ou mal formatado",
+		}
+		if err != nil {
+			log.Println(err)
+		}
+		return &response, nil
+	} else if request.Name == "" {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		response := models.Erros{
+			ErrorCode:    "INVALID_NAME",
+			ErrorMessage: "Parâmetro NAME ausente",
+		}
+		if err != nil {
+			log.Println(err)
+		}
+		return &response, nil
+	} else if !matchEmail {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		response := models.Erros{
+			ErrorCode:    "INVALID_EMAIL",
+			ErrorMessage: "Parâmetro EMAIL ausente OU mal formatado",
+		}
+		if err != nil {
+			log.Println(err)
+		}
+		return &response, nil
 	}
 
 	//Database
@@ -125,7 +175,7 @@ func Update(params map[string]string, r *http.Request) (*models.ClientResponse, 
 		return nil, err
 	}
 
-	_, err = stmt.Exec(request.CPF, request.Name, request.Email, params["id"])
+	_, err = stmt.Exec(request.CPF, request.Name, request.Email, id)
 	if err != nil {
 		return nil, err
 	}

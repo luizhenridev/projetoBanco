@@ -55,7 +55,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		}
 		err = json.NewEncoder(w).Encode(&response) // Defina o código de status antes de escrever o corpo
 		if err != nil {
-			return
+			log.Println(err)
 		}
 		return
 	} else if request.Name == "" {
